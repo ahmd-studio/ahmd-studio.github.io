@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AHMD — Creative Director + Post Production</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0705;
+    --ink: #f4ede4;
+    --ink-dim: #8a7f73;
+    --ink-mute: #4a423a;
+    --orange: #ff5a1f;
+    --orange-deep: #c43a0a;
+    --line: #1f1a15;
+    --grain: rgba(255,255,255,0.015);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Fraunces', serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    line-height: 1.4;
+    position: relative;
+  }
+
+  /* Film grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  /* Vignette */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99;
+    background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.5) 100%);
+  }
+
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    font-size: 11px;
+  }
+
+  /* ============ NAV ============ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    padding: 28px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: difference;
+  }
+
+  nav .logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  nav .logo span { color: var(--orange); }
+
+  nav .menu {
+    display: flex;
+    gap: 32px;
+  }
+
+  nav .menu a {
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  nav .menu a:hover { color: var(--orange); }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 140px 40px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-meta-top {
+    display: flex;
+    justify-content: space-between;
+    color: var(--ink-dim);
+  }
+
+  .hero-name {
+    font-size: clamp(120px, 28vw, 440px);
+    font-weight: 900;
+    line-height: 0.85;
+    letter-spacing: -0.05em;
+    margin: 0;
+    position: relative;
+    color: var(--ink);
+  }
+
+  .hero-name .dot {
+    color: var(--orange);
+    display: inline-block;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  .hero-bottom {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: end;
+    gap: 40px;
+    margin-top: 40px;
+  }
+
+  .tagline {
+    font-style: italic;
+    font-size: 22px;
+    font-weight: 300;
+    color: var(--ink);
+    max-width: 380px;
+    line-height: 1.3;
+  }
+
+  .tagline em {
+    color: var(--orange);
+    font-style: italic;
+  }
+
+  .hero-pills {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pill {
+    border: 1px solid var(--ink-mute);
+    border-radius: 999px;
+    padding: 8px 16px;
+    color: var(--ink-dim);
+    transition: all 0.3s;
+  }
+
+  .pill:hover {
+    border-color: var(--orange);
+    color: var(--orange);
+  }
+
+  .scroll-cue {
+    text-align: right;
+    color: var(--ink-dim);
+  }
+
+  .scroll-cue .arrow {
+    display: inline-block;
+    animation: bob 2s ease-in-out infinite;
+    margin-left: 6px;
+  }
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(4px); }
+  }
+
+  /* ============ MARQUEE ============ */
+  .marquee {
+    overflow: hidden;
+    padding: 30px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: rgba(255,90,31,0.03);
+    position: relative;
+  }
+
+  .marquee-track {
+    display: flex;
+    gap: 60px;
+    animation: scroll 35s linear infinite;
+    white-space: nowrap;
+    width: max-content;
+  }
+
+  @keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .marquee-item {
+    font-size: 42px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 60px;
+  }
+
+  .marquee-item::after {
+    content: '✦';
+    color: var(--orange);
+    font-size: 24px;
+    font-style: normal;
+  }
+
+  /* ============ SECTIONS ============ */
+  section { padding: 140px 40px; position: relative; }
+
+  .section-label {
+    color: var(--orange);
+    margin-bottom: 60px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-label::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--orange);
+  }
+
+  /* ============ PROJECTS ============ */
+  .projects {
+    border-top: 1px solid var(--line);
+  }
+
+  .project-row {
+    display: grid;
+    grid-template-columns: 80px 180px 1fr 60px;
+    align-items: center;
+    padding: 36px 0;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    transition: padding 0.4s ease, background 0.4s ease;
+    position: relative;
+  }
+
+  .project-row:hover {
+    padding-left: 24px;
+    background: linear-gradient(90deg, rgba(255,90,31,0.04) 0%, transparent 100%);
+  }
+
+  .project-row .num {
+    color: var(--ink-dim);
+  }
+
+  .project-row .cat {
+    color: var(--ink-dim);
+  }
+
+  .project-row .title {
+    font-size: clamp(32px, 4vw, 56px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    color: var(--ink);
+    transition: color 0.3s, font-style 0.3s;
+  }
+
+  .project-row:hover .title {
+    color: var(--orange);
+    font-style: italic;
+  }
+
+  .project-row .arrow {
+    text-align: right;
+    color: var(--ink-dim);
+    font-size: 24px;
+    transition: transform 0.4s, color 0.3s;
+  }
+
+  .project-row:hover .arrow {
+    color: var(--orange);
+    transform: translate(8px, -8px);
+  }
+
+  /* ============ INTENTIONAL CUTS ============ */
+  .cuts {
+    background: linear-gradient(180deg, var(--bg) 0%, #110b07 50%, var(--bg) 100%);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .cuts-title {
+    font-size: clamp(60px, 10vw, 160px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--orange);
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+    margin-bottom: 30px;
+  }
+
+  .cuts-desc {
+    max-width: 540px;
+    margin: 0 auto;
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--ink-dim);
+  }
+
+  /* ============ ABOUT ============ */
+  .about {
+    border-top: 1px solid var(--line);
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 100px;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .about h2 {
+    font-size: clamp(48px, 6vw, 88px);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 40px;
+  }
+
+  .about h2 em {
+    color: var(--orange);
+    font-style: italic;
+  }
+
+  .about-body p {
+    font-size: 19px;
+    line-height: 1.6;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+
+  .about-body p.dim {
+    color: var(--ink-dim);
+  }
+
+  .info-strip {
+    margin-top: 60px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+  }
+
+  .info-cell .label {
+    color: var(--ink-dim);
+    margin-bottom: 8px;
+  }
+
+  .info-cell .value {
+    font-size: 18px;
+    color: var(--ink);
+  }
+
+  /* Photo placeholder */
+  .photo-frame {
+    aspect-ratio: 4/5;
+    background: linear-gradient(135deg, #1a120b 0%, #0f0a06 100%);
+    border: 1px solid var(--line);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .photo-frame::before {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px solid var(--ink-mute);
+  }
+
+  .photo-frame .photo-label {
+    color: var(--ink-mute);
+    text-align: center;
+    z-index: 2;
+  }
+
+  .photo-frame .corner {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--orange);
+  }
+  .photo-frame .corner.tl { top: 24px; left: 24px; border-right: none; border-bottom: none; }
+  .photo-frame .corner.tr { top: 24px; right: 24px; border-left: none; border-bottom: none; }
+  .photo-frame .corner.bl { bottom: 24px; left: 24px; border-right: none; border-top: none; }
+  .photo-frame .corner.br { bottom: 24px; right: 24px; border-left: none; border-top: none; }
+
+  /* ============ CONTACT ============ */
+  .contact {
+    text-align: center;
+    padding: 180px 40px 80px;
+    border-top: 1px solid var(--line);
+  }
+
+  .contact .lead {
+    color: var(--ink-dim);
+    margin-bottom: 40px;
+  }
+
+  .contact h2 {
+    font-size: clamp(60px, 9vw, 140px);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 60px;
+  }
+
+  .email-link {
+    display: inline-block;
+    font-size: clamp(28px, 4vw, 52px);
+    color: var(--orange);
+    text-decoration: none;
+    border-bottom: 1px solid var(--orange);
+    padding-bottom: 8px;
+    transition: all 0.3s;
+  }
+
+  .email-link:hover {
+    color: var(--ink);
+    border-color: var(--ink);
+    letter-spacing: 0.02em;
+  }
+
+  .socials {
+    margin-top: 60px;
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+  }
+
+  .socials a {
+    color: var(--ink-dim);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .socials a:hover { color: var(--orange); }
+
+  /* ============ FOOTER ============ */
+  footer {
+    padding: 30px 40px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    color: var(--ink-mute);
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    nav .menu { gap: 18px; }
+    .hero { padding: 120px 24px 32px; }
+    .hero-bottom {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .tagline { max-width: 100%; font-size: 18px; }
+    .hero-pills { justify-content: flex-start; }
+    .scroll-cue { text-align: left; }
+    section { padding: 90px 24px; }
+    .project-row {
+      grid-template-columns: 50px 1fr 30px;
+      padding: 28px 0;
+    }
+    .project-row .cat { display: none; }
+    .about-grid { grid-template-columns: 1fr; gap: 60px; }
+    .marquee-item { font-size: 28px; }
+    .contact { padding: 120px 24px 60px; }
+    footer { padding: 24px; flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">ahmd<span>.</span>studio</div>
+  <div class="menu mono">
+    <a href="#work">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-meta-top mono">
+    <span>Portfolio &mdash; 2026 / Vol. 01</span>
+    <span>Islamabad &middot; Worldwide</span>
+  </div>
+
+  <h1 class="hero-name">AHMD<span class="dot">.</span></h1>
+
+  <div class="hero-bottom">
+    <p class="tagline">Where stories find their <em>atmosphere</em>.</p>
+    <div class="hero-pills mono">
+      <span class="pill">Creative Director</span>
+      <span class="pill">Post Production</span>
+      <span class="pill">Sound Design</span>
+    </div>
+    <div class="scroll-cue mono">
+      Scroll <span class="arrow">↓</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span class="marquee-item">Edit</span>
+    <span class="marquee-item">Color</span>
+    <span class="marquee-item">Sound</span>
+    <span class="marquee-item">Story</span>
+    <span class="marquee-item">Atmosphere</span>
+    <span class="marquee-item">Weight</span>
+    <span class="marquee-item">Edit</span>
+    <span class="marquee-item">Color</span>
+    <span class="marquee-item">Sound</span>
+    <span class="marquee-item">Story</span>
+    <span class="marquee-item">Atmosphere</span>
+    <span class="marquee-item">Weight</span>
+  </div>
+</div>
+
+<!-- PROJECTS -->
+<section class="projects" id="work">
+  <div class="section-label mono">Selected Work</div>
+
+  <div class="project-row">
+    <span class="num mono">01</span>
+    <span class="cat mono">Brand Film</span>
+    <span class="title">Rousseau Chocolatier</span>
+    <span class="arrow">↗</span>
+  </div>
+
+  <div class="project-row">
+    <span class="num mono">02</span>
+    <span class="cat mono">Documentary</span>
+    <span class="title">Creating an Inclusive Culture</span>
+    <span class="arrow">↗</span>
+  </div>
+
+  <div class="project-row">
+    <span class="num mono">03</span>
+    <span class="cat mono">Music Video</span>
+    <span class="title">She Paid — S.I.N.</span>
+    <span class="arrow">↗</span>
+  </div>
+
+  <div class="project-row">
+    <span class="num mono">04</span>
+    <span class="cat mono">Live Event</span>
+    <span class="title">Last Name Legendary Tour</span>
+    <span class="arrow">↗</span>
+  </div>
+
+  <div class="project-row">
+    <span class="num mono">05</span>
+    <span class="cat mono">Series</span>
+    <span class="title">Peach Builder Series</span>
+    <span class="arrow">↗</span>
+  </div>
+
+  <div class="project-row">
+    <span class="num mono">06</span>
+    <span class="cat mono">Brand Film</span>
+    <span class="title">Lunar New Year</span>
+    <span class="arrow">↗</span>
+  </div>
+
+  <div class="project-row">
+    <span class="num mono">07</span>
+    <span class="cat mono">Music Video</span>
+    <span class="title">Woo Hah</span>
+    <span class="arrow">↗</span>
+  </div>
+
+  <div class="project-row">
+    <span class="num mono">08</span>
+    <span class="cat mono">Short Film</span>
+    <span class="title">The Loop</span>
+    <span class="arrow">↗</span>
+  </div>
+
+  <div class="project-row">
+    <span class="num mono">09</span>
+    <span class="cat mono">Cinematic Essay</span>
+    <span class="title">Haunted by Greatness</span>
+    <span class="arrow">↗</span>
+  </div>
+</section>
+
+<!-- INTENTIONAL CUTS -->
+<section class="cuts">
+  <div class="section-label mono" style="justify-content:center;">Manifesto</div>
+  <h2 class="cuts-title">Intentional<br>Cuts.</h2>
+  <p class="cuts-desc">
+    I cut stories that make you feel something. Edit, color, and sound design &mdash; built to serve the film, not overshadow it.
+  </p>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="section-label mono">About</div>
+
+  <div class="about-grid">
+    <div>
+      <h2>An editor with a <em>directorial</em> instinct.</h2>
+      <div class="about-body">
+        <p>
+          I'm Ahmd &mdash; a freelance video editor and creative director based in Islamabad, Pakistan. Started cutting music videos and live events. Three years later: brand films, short films, cinematic essays, and documentary work for international clients.
+        </p>
+        <p class="dim">
+          The work that interests me has weight to it. Films that earn their atmosphere instead of decorating around the absence of one.
+        </p>
+
+        <div class="info-strip">
+          <div class="info-cell">
+            <div class="label mono">Based In</div>
+            <div class="value">Islamabad, PK</div>
+          </div>
+          <div class="info-cell">
+            <div class="label mono">Available For</div>
+            <div class="value">Worldwide collab</div>
+          </div>
+          <div class="info-cell">
+            <div class="label mono">Experience</div>
+            <div class="value">3+ Years</div>
+          </div>
+          <div class="info-cell">
+            <div class="label mono">Discipline</div>
+            <div class="value">Post + Direction</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-frame">
+      <span class="corner tl"></span>
+      <span class="corner tr"></span>
+      <span class="corner bl"></span>
+      <span class="corner br"></span>
+      <div class="photo-label mono">
+        [ Drop your portrait here ]<br><br>
+        the smoke + bokeh one
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <p class="lead mono">— Let's make something with weight —</p>
+  <h2>Start a <em style="color:var(--orange);">project.</em></h2>
+  <a href="mailto:hello@ahmd.studio" class="email-link">hello@ahmd.studio</a>
+
+  <div class="socials mono">
+    <a href="#">Instagram</a>
+    <a href="#">Vimeo</a>
+    <a href="#">LinkedIn</a>
+    <a href="#">YouTube</a>
+  </div>
+</section>
+
+<footer class="mono">
+  <span>© AHMD Studio &mdash; 2026</span>
+  <span>Designed &amp; cut by Ahmd</span>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const rows = document.querySelectorAll('.project-row');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.15 });
+
+  rows.forEach((r, i) => {
+    r.style.opacity = '0';
+    r.style.transform = 'translateY(30px)';
+    r.style.transition = `opacity 0.8s ease ${i * 0.05}s, transform 0.8s ease ${i * 0.05}s, padding 0.4s ease, background 0.4s ease`;
+    io.observe(r);
+  });
+</script>
+
+</body>
+</html>
