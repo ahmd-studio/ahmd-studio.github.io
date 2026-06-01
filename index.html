@@ -119,7 +119,7 @@
     color: var(--orange);
     text-transform: uppercase;
     text-align: center;
-    margin-bottom: 32px;
+    margin-bottom: 45px;
     width: 100%;
     max-width: 1700px;
   }
@@ -184,7 +184,7 @@
 
   /* ============ SECTIONS ============ */
   section {
-    padding: 220px 40px;
+    padding: 160px 40px;
     position: relative;
     z-index: 2;
   }
@@ -227,7 +227,7 @@
   .project-row .cat { color: var(--ink-dim); }
   .project-row .title {
     font-family: 'Clash Display', sans-serif;
-    font-size: clamp(22px, 2.6vw, 38px);
+    font-size: clamp(30px, 3.8vw, 54px);
     font-weight: 600;
     letter-spacing: -0.02em;
     line-height: 1;
@@ -239,7 +239,7 @@
   .project-row .arrow {
     text-align: right;
     color: var(--ink-dim);
-    font-size: 19px;
+    font-size: 22px;
     transition: transform 0.4s, color 0.3s;
   }
   .project-row:hover .arrow {
@@ -254,12 +254,12 @@
   }
   .cuts-title {
     font-family: 'Clash Display', sans-serif;
-    font-size: clamp(40px, 6vw, 88px);
+    font-size: clamp(56px, 9vw, 140px);
     font-weight: 600;
     color: var(--orange);
     letter-spacing: -0.03em;
     line-height: 0.95;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     text-transform: uppercase;
   }
   .cuts-desc {
@@ -274,12 +274,14 @@
   .about {
     background: transparent;
   }
+  .about-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+  }
   .about-grid {
     display: grid;
     grid-template-columns: 1.2fr 1fr;
     gap: 80px;
-    max-width: 1400px;
-    margin: 0 auto;
     align-items: center;
   }
   .about h2 {
@@ -347,7 +349,7 @@
   /* ============ CONTACT ============ */
   .contact {
     text-align: center;
-    padding: 220px 40px 160px;
+    padding: 200px 40px 240px;
   }
   .contact .lead {
     color: var(--ink-dim);
@@ -440,7 +442,7 @@
     }
     .hero-pills { justify-content: center; }
     .scroll-cue { text-align: center; }
-    section { padding: 120px 24px; }
+    n { padding: 120px 24px; }
     .project-row {
       grid-template-columns: 50px 1fr 30px;
       padding: 28px 0;
@@ -471,7 +473,7 @@
   </div>
 </nav>
 
-<section class="hero">
+<n class="hero">
   <h1 class="hero-name">AHMD</h1>
   <p class="hero-sub mono">Independent post-production — edit &amp; sound design.</p>
 
@@ -486,10 +488,10 @@
       Scroll <span class="arrow">↓</span>
     </div>
   </div>
-</section>
+</n>
 
-<section class="projects" id="work">
-  <div class="section-label mono">Selected Work</div>
+<n class="projects" id="work">
+  <div class="n-label mono">Selected Work</div>
 
   <div class="project-row"><span class="num mono">01</span><span class="cat mono">Brand Film</span><span class="title">Rousseau Chocolatier</span><span class="arrow">↗</span></div>
   <div class="project-row"><span class="num mono">02</span><span class="cat mono">Documentary</span><span class="title">Creating an Inclusive Culture</span><span class="arrow">↗</span></div>
@@ -500,18 +502,19 @@
   <div class="project-row"><span class="num mono">07</span><span class="cat mono">Music Video</span><span class="title">Woo Hah</span><span class="arrow">↗</span></div>
   <div class="project-row"><span class="num mono">08</span><span class="cat mono">Short Film</span><span class="title">The Loop</span><span class="arrow">↗</span></div>
   <div class="project-row"><span class="num mono">09</span><span class="cat mono">Cinematic Essay</span><span class="title">Haunted by Greatness</span><span class="arrow">↗</span></div>
-</section>
+</n>
 
-<section class="cuts">
-  <div class="section-label mono" style="justify-content:center;">Manifesto</div>
+<n class="cuts">
+  <div class="n-label mono" style="justify-content:center;">Manifesto</div>
   <h2 class="cuts-title">Intentional<br>Cuts.</h2>
   <p class="cuts-desc">
     Post-production for director-led films and boutique agencies. Narrative-first. Atmospheric by nature.
   </p>
-</section>
+</n>
 
 <section class="about" id="about">
-  <div class="section-label mono">About</div>
+  <div class="about-inner">
+    <div class="section-label mono">About</div>
   <div class="about-grid">
     <div>
       <h2>An editor with a <em>directorial</em> instinct.</h2>
@@ -525,10 +528,11 @@
           <div class="info-cell"><div class="label mono">Status</div><div class="value">Open to projects</div></div>
         </div>
       </div>
-    </div>
+     </div>
     <div class="portrait">
       <img src="/portrait.png" alt="Ahmd" />
     </div>
+  </div>
   </div>
 </section>
 
