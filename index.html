@@ -181,6 +181,19 @@
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(4px); }
   }
+  .scroll-cue .status-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+    margin-left: 8px;
+    animation: pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(255, 122, 31, 0.5); }
+    50% { opacity: 0.5; box-shadow: 0 0 0 5px rgba(255, 122, 31, 0); }
+  }
 
   /* ============ SECTIONS ============ */
   section {
@@ -467,8 +480,6 @@
 <nav>
   <div class="logo">ahmd<span>.</span>studio</div>
   <div class="menu mono">
-    <a href="#work">Work</a>
-    <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </div>
 </nav>
@@ -485,56 +496,10 @@
       <span class="pill">Sound Design</span>
     </div>
     <div class="scroll-cue mono">
-      Scroll <span class="arrow">↓</span>
+      Full portfolio going live soon <span class="status-dot"></span>
     </div>
   </div>
 </n>
-
-<n class="projects" id="work">
-  <div class="n-label mono">Selected Work</div>
-
-  <div class="project-row"><span class="num mono">01</span><span class="cat mono">Brand Film</span><span class="title">Rousseau Chocolatier</span><span class="arrow">↗</span></div>
-  <div class="project-row"><span class="num mono">02</span><span class="cat mono">Documentary</span><span class="title">Creating an Inclusive Culture</span><span class="arrow">↗</span></div>
-  <div class="project-row"><span class="num mono">03</span><span class="cat mono">Music Video</span><span class="title">She Paid — S.I.N.</span><span class="arrow">↗</span></div>
-  <div class="project-row"><span class="num mono">04</span><span class="cat mono">Live Event</span><span class="title">Last Name Legendary Tour</span><span class="arrow">↗</span></div>
-  <div class="project-row"><span class="num mono">05</span><span class="cat mono">Series</span><span class="title">Peach Builder Series</span><span class="arrow">↗</span></div>
-  <div class="project-row"><span class="num mono">06</span><span class="cat mono">Brand Film</span><span class="title">Lunar New Year</span><span class="arrow">↗</span></div>
-  <div class="project-row"><span class="num mono">07</span><span class="cat mono">Music Video</span><span class="title">Woo Hah</span><span class="arrow">↗</span></div>
-  <div class="project-row"><span class="num mono">08</span><span class="cat mono">Short Film</span><span class="title">The Loop</span><span class="arrow">↗</span></div>
-  <div class="project-row"><span class="num mono">09</span><span class="cat mono">Cinematic Essay</span><span class="title">Haunted by Greatness</span><span class="arrow">↗</span></div>
-</n>
-
-<n class="cuts">
-  <div class="n-label mono" style="justify-content:center;">Manifesto</div>
-  <h2 class="cuts-title">Intentional<br>Cuts.</h2>
-  <p class="cuts-desc">
-    Post-production for director-led films and boutique agencies. Narrative-first. Atmospheric by nature.
-  </p>
-</n>
-
-<section class="about" id="about">
-  <div class="about-inner">
-    <div class="section-label mono">About</div>
-  <div class="about-grid">
-    <div>
-      <h2>An editor with a <em>directorial</em> instinct.</h2>
-      <div class="about-body">
-        <p>I work in the background — cutting music videos, brand films, short films, cinematic essays, and documentary work for international clients. The credit goes to the film. I just shape it.</p>
-        <p class="dim">The work that interests me has weight to it. Films that earn their atmosphere instead of decorating around the absence of one.</p>
-        <div class="info-strip">
-          <div class="info-cell"><div class="label mono">Available For</div><div class="value">Worldwide collab</div></div>
-          <div class="info-cell"><div class="label mono">Experience</div><div class="value">3+ Years</div></div>
-          <div class="info-cell"><div class="label mono">Discipline</div><div class="value">Post + Direction</div></div>
-          <div class="info-cell"><div class="label mono">Status</div><div class="value">Open to projects</div></div>
-        </div>
-      </div>
-     </div>
-    <div class="portrait">
-      <img src="/portrait.png" alt="Ahmd" />
-    </div>
-  </div>
-  </div>
-</section>
 
 <section class="contact" id="contact">
   <p class="lead mono">— Let's make something with weight —</p>
@@ -554,23 +519,6 @@
 </footer>
 
 <script>
-  const rows = document.querySelectorAll('.project-row');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((e) => {
-      if (e.isIntersecting) {
-        e.target.style.opacity = '1';
-        e.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.15 });
-
-  rows.forEach((r, i) => {
-    r.style.opacity = '0';
-    r.style.transform = 'translateY(30px)';
-    r.style.transition = `opacity 0.8s ease ${i * 0.05}s, transform 0.8s ease ${i * 0.05}s, padding 0.4s ease, background 0.4s ease`;
-    io.observe(r);
-  });
-
   document.querySelectorAll('a[href="#top"]').forEach(a => {
     a.addEventListener('click', (e) => {
       e.preventDefault();
